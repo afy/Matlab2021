@@ -9,11 +9,12 @@ hold on
 while i < 15 %loop enough times so upper bound is visible
     a = sqrt(1+(a*2));
     plot(i,a, "r*") %set points in graph
-    fprintf("%d %d \n",  i, a) %get printouts
+    %fprintf("Loop %f: %f\n", i, a)
     i=i+0.1; %increase with each loop i 
 end
 hold off
 xlabel('x-axis')
 ylabel('y-axis')
 title('Block 1 9.1.30')
+fprintf("final value of a is %f\n", a)
 %While the upper bound goes to 3, the value of y does not exceed 2.4142
