@@ -1,19 +1,27 @@
-% function 
-f = @(x) exp(-x); % no need to derivate; derivative of exp(-x) = exp(-x)
+format long
 
-% set up taylors function; note that since f=f'=f''=...=f'(n)
-% we simply write f(x) in its place (for simplicity)
-% also the max changes 0! -> 1! so no zero division occurs
-% n is written instead of n+1, since the limit is decided in loop
-% and therefore we only want this function to be able to step (keeps it easy)
-a = 0;
-t = @(x, n) (f(a) / factorial(max(1, n))) * ((x-a)^(n));
+% maclaurin gives us the following formula for e^x as x->0:
+% 1 + x + x^2/2! + x^3/3! + ... + x^n/n!
+% since we want 1/e, we can see that e^-1 (x=1) gives 1(e), therefore:
+%   x = 1
+% we can also note that for e^-x the sign of the iteration will vary
+Pn = @(n) ((-1)^n) * (1 / factorial(n)); 
 
-% caluclate to 5 decimal points
-result = 0;
-prec = 10;
-for i = 0:prec
-    result = result + t(1, i);
+% find iteration count n for a set precision
+n = 1;
+p = 1;
+while p > 0.000005
+   n = n + 1;
+   p = 1/factorial(n+1);
 end
+fprintf("number of iterations is %d\n", n)
 
-% display result
+% use n to iterate over f 
+% note that since for our function e^-x, Pn(x) = 1 - 1 + 1/2! - ...
+% the first two terms equal 0, and the loop should start at 2
+r = 0;
+for i = 2:n+1
+    r = r + Pn(i);
+    %fprintf("%d: %f\n", i, r)
+end
+fprintf("Final value is %0.5f\n", r)
